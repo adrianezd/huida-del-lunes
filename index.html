@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Huida del lunes — escapa de la oficina sin que te pille el jefe</title>
+<meta name="description" content="Juego de mesa de un jugador gratis: es lunes y quieres irte de la oficina. Recoge los informes en las impresoras, llévaselos a tus compañeros para que te cubran y escapa antes de las 18:00 sin que el jefe te vea. Oficina del día y oficinas al azar.">
+<meta name="keywords" content="juego de un jugador, escapar de la oficina, juego de mesa solitario online, juego del jefe, juego de sigilo, juego gratis navegador">
+<link rel="canonical" href="https://adrianezd.github.io/huida-del-lunes/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="icon-512.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#eef1f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#11141b" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Huida del lunes — escapa de la oficina">
+<meta property="og:description" content="Recoge los informes, que tus compañeros te cubran y sal antes de las 18:00 sin que el jefe te pille. Gratis, de un jugador.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://adrianezd.github.io/huida-del-lunes/">
+<meta property="og:image" content="https://adrianezd.github.io/huida-del-lunes/og-image.png">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":["WebApplication","Game"],"name":"Huida del lunes","url":"https://adrianezd.github.io/huida-del-lunes/","description":"Juego de mesa de un jugador: escapa de la oficina sin que te pille el jefe.","inLanguage":"es","applicationCategory":"GameApplication","operatingSystem":"Any","isAccessibleForFree":true,"numberOfPlayers":{"@type":"QuantitativeValue","value":1},"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Cómo se gana?","acceptedAnswer":{"@type":"Answer","text":"Entrega el informe de cada uno de tus tres compañeros y sal por la puerta antes de las 18:00 sin que el jefe te pille."}},{"@type":"Question","name":"¿Cómo se mueve el jefe?","acceptedAnswer":{"@type":"Answer","text":"Solo: patrulla por la oficina y mira en línea recta. Si te ve, va a por ti. Cuánto anda cada turno lo decide una carta que puedes ver antes de mover."}}]}]}
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo" aria-hidden="true">🏃</span><div><h1>Huida del lunes</h1><p id="level">Oficina del día</p></div></div>
+  <label class="snd"><input type="checkbox" id="sound"> Sonido</label>
+</header>
+
+<main>
+  <nav class="modes" aria-label="Partida">
+    <button type="button" data-mode="daily">📅 Oficina del día</button>
+    <div class="levels">
+      <span>Al azar</span>
+      <button type="button" data-level="facil">Fácil</button>
+      <button type="button" data-level="normal">Normal</button>
+      <button type="button" data-level="dificil">Difícil</button>
+    </div>
+  </nav>
+
+  <section class="stats" aria-label="Estado">
+    <div><span>Hora</span><strong id="time">09:00</strong></div>
+    <div><span>Turnos</span><strong id="left">36</strong></div>
+    <div><span>Informes</span><strong id="reports">0/3</strong></div>
+  </section>
+
+  <div class="play">
+    <div class="office" id="office" aria-label="Oficina"></div>
+
+    <aside class="side">
+      <p class="label" id="card-label">Lo próximo del jefe</p>
+      <div class="boss-card" id="card"></div>
+      <p class="log" id="log" role="status"></p>
+      <div class="row">
+        <div class="box"><p class="label">Llevas</p><div class="carry" id="carry"></div></div>
+        <div class="box"><p class="label">Objetos</p><div class="items" id="items"></div></div>
+      </div>
+      <button type="button" class="btn" id="stay">🫥 Esperar</button>
+      <ul class="mates" id="mates"></ul>
+      <p class="wins">Huidas: <strong id="wins">0</strong></p>
+    </aside>
+  </div>
+
+  <section class="info">
+    <h2>Cómo se juega</h2>
+    <ol>
+      <li>Es lunes y quieres irte. Pero antes, cada uno de tus tres compañeros necesita su informe.</li>
+      <li>Toca una casilla marcada para moverte hasta 3 casillas. No puedes atravesar mesas ni al jefe.</li>
+      <li>Las 🖨️ impresoras están tapadas: al pasar por una descubres de quién es su informe y lo coges. Puedes llevar dos a la vez. Ojo, hacen ruido.</li>
+      <li>Lleva cada informe a su compañero. Te cubre y te da un objeto: ☕ café para correr más, 📎 una excusa por si te pillan o 📞 una llamada falsa que entretiene al jefe.</li>
+      <li>Con los tres informes entregados, la 🚪 puerta se abre. ¡Sal por ella!</li>
+      <li>Después de cada movimiento tuyo se mueve el jefe. Patrulla y mira en línea recta: las casillas rojas son las que ve. Si te ve, va a por ti. Su próxima carta está a la vista.</li>
+      <li>Pierdes si te pilla o si dan las 18:00 sin haber salido.</li>
+    </ol>
+  </section>
+
+  <div class="end" id="end" hidden>
+    <div class="end-card" role="dialog" aria-labelledby="end-title">
+      <span class="end-emoji" id="end-emoji">🏃</span>
+      <h2 id="end-title">¡Has escapado!</h2>
+      <p id="end-text"></p>
+      <div class="end-actions">
+        <button type="button" class="btn btn-main" id="share">Compartir</button>
+        <button type="button" class="btn btn-main" id="again">Otra oficina</button>
+        <button type="button" class="btn" id="close">Ver la oficina</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <p>Juego de mesa de un jugador original. Más juegos gratis en <a href="https://adrianezd.github.io/portal/">el portal</a>.</p>
+</footer>
+<script src="script.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "Huida del lunes",
+  "short_name": "Huida lunes",
+  "description": "Escapa de la oficina sin que te pille el jefe.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef1f6",
+  "theme_color": "#eef1f6",
+  "lang": "es",
+  "categories": [
+    "games"
+  ],
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
