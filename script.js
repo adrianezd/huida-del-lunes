@@ -17,9 +17,9 @@ const STORE = 'huida-lunes-v1';
 const STEP_MS = 140;
 
 const MATES = [
-  { name: 'Ana', emoji: '👩‍💼', color: 'azul' },
-  { name: 'Luis', emoji: '👨‍💻', color: 'verde' },
-  { name: 'Marta', emoji: '👩‍🔬', color: 'naranja' }
+  { name: 'Ana', emoji: '👩‍💼', art: 'ana', color: 'azul' },
+  { name: 'Luis', emoji: '👨‍💻', art: 'luis', color: 'verde' },
+  { name: 'Marta', emoji: '👩‍🔬', art: 'marta', color: 'naranja' }
 ];
 const ITEMS = {
   cafe: { emoji: '☕', name: 'Café', text: 'Este turno mueves 3 casillas más.' },
@@ -40,6 +40,10 @@ const LEVELS = {
   dificil: { name: 'Difícil', vision: 6, turns: 30, deck: { ronda: 3, prisa: 4, cafe: 1, reunion: 0, inspeccion: 2, llama: 2 } }
 };
 const MOVE = 3;
+// dibujos de assets/ (SVG propios)
+const art = (name, cls = '') => `<img class="art ${cls}" src="assets/${name}.svg" alt="" draggable="false">`;
+const ITEM_ART = { cafe: 'cafe', excusa: 'excusa', llamada: 'llamada' };
+const CARD_ART = { ronda: 'carta-ronda', prisa: 'carta-prisa', cafe: 'carta-cafe', reunion: 'carta-reunion', inspeccion: 'carta-inspeccion', llama: 'carta-llama' };
 
 /* ------------------------------- Azar con semilla ------------------------------- */
 
@@ -353,7 +357,7 @@ function finish(win, why) {
 
 function showEnd() {
   const e = G.end;
-  el.endEmoji.textContent = e.win ? '🏃‍♂️💨' : e.why === 'time' ? '🕕' : '😱';
+  el.endEmoji.innerHTML = art(e.win ? 'yo-huye' : e.why === 'time' ? 'reloj' : 'jefe-enfadado');
   el.endTitle.textContent = e.win ? '¡Has escapado!' : e.why === 'time' ? 'Horas extra' : '¡Te ha pillado!';
   el.endText.textContent = e.win
     ? `Sales por la puerta a las ${clock(G.turn)}. El jefe ni se ha enterado.`
@@ -373,18 +377,19 @@ function render() {
     let inner = '';
     if (G.walls[c]) {
       cls += ' desk';
-      inner = G.plants.includes(c) ? '🪴' : (c * 7) % 5 === 0 ? '🖥️' : '';
+      const obj = G.plants.includes(c) ? 'obj-planta' : (c * 7) % 5 === 0 ? 'obj-pc' : ['', 'obj-papeles', '', 'obj-taza', '', 'obj-carpeta'][c % 6];
+      inner = obj ? art(obj, 'deskobj') : '';
     } else {
       if (vis.has(c) && !G.stunned) cls += ' seen';
       if (can.has(c)) cls += ' can';
       const pr = G.printers.find((p) => p.c === c);
       const m = G.mates.find((x) => x.c === c);
-      if (pr) inner = `<span class="obj">🖨️</span>${pr.seen ? `<i class="dot ${MATES[pr.mate].color}"></i>` : '<i class="q">?</i>'}`;
-      else if (m) inner = `<span class="obj${m.done ? ' done' : ''}">${MATES[m.mate].emoji}</span><i class="dot ${MATES[m.mate].color}"></i>${m.done ? '<i class="tick">✓</i>' : ''}`;
-      else if (c === G.exit) inner = `<span class="obj">🚪</span>${exitOpen() ? '' : '<i class="lock">🔒</i>'}`;
-      else if (c === G.office) inner = '<span class="obj faint">🗂️</span>';
-      if (c === G.me) inner += '<span class="tok me">🙋</span>';
-      if (c === G.boss) inner += `<span class="tok boss${G.bossMode === 'chase' ? ' angry' : ''}">${G.stunned ? '📞' : '🧔'}</span>`;
+      if (pr) inner = `<span class="obj">${art(pr.seen ? 'impresora-' + MATES[pr.mate].color : 'impresora')}</span>${pr.seen ? `<i class="dot ${MATES[pr.mate].color}"></i>` : '<i class="q">?</i>'}`;
+      else if (m) inner = `<span class="obj mate${m.done ? ' done' : ''}">${art(MATES[m.mate].art + (m.done ? '-ok' : ''))}</span><i class="dot ${MATES[m.mate].color}"></i>${m.done ? '<i class="tick">✓</i>' : ''}`;
+      else if (c === G.exit) inner = `<span class="obj">${art(exitOpen() ? 'puerta-abierta' : 'puerta')}</span>${exitOpen() ? '' : `<i class="lock">${art('candado')}</i>`}`;
+      else if (c === G.office) inner = `<span class="obj faint">${art('despacho', 'tile')}</span>`;
+      if (c === G.me) inner += `<span class="tok me">${art('yo')}</span>`;
+      if (c === G.boss) inner += `<span class="tok boss${G.bossMode === 'chase' ? ' angry' : ''}">${art(G.stunned ? 'jefe-telefono' : G.bossMode === 'chase' ? 'jefe-enfadado' : 'jefe')}</span>`;
     }
     cells.push(`<button type="button" class="${cls}" data-c="${c}" ${can.has(c) ? '' : 'tabindex="-1"'}>${inner}</button>`);
   }
@@ -394,14 +399,14 @@ function render() {
   el.reports.textContent = `${G.mates.filter((m) => m.done).length}/3`;
   el.level.textContent = G.mode === 'daily' ? 'Oficina del día' : `Oficina al azar · ${G.L.name}`;
   const card = CARDS[G.phase === 'boss' ? G.shown : G.next];
-  el.card.innerHTML = `<span class="card-emoji">${card.emoji}</span><div><strong>${card.name}</strong><small>${G.stunned ? 'Está al teléfono: no se mueve.' : card.text}</small></div>`;
+  el.card.innerHTML = `<span class="card-emoji">${art(G.stunned ? 'jefe-telefono' : CARD_ART[G.phase === 'boss' ? G.shown : G.next])}</span><div><strong>${card.name}</strong><small>${G.stunned ? 'Está al teléfono: no se mueve.' : card.text}</small></div>`;
   el.card.classList.toggle('is-now', G.phase === 'boss');
   el.cardLabel.textContent = G.phase === 'boss' ? 'El jefe mueve' : 'Lo próximo del jefe';
-  el.carry.innerHTML = G.carry.length ? G.carry.map((m) => `<span class="chip ${MATES[m].color}">📄 ${MATES[m].name}</span>`).join('') : '<span class="none">Nada</span>';
-  el.items.innerHTML = G.items.length ? G.items.map((it, i) => `<button type="button" class="item" data-item="${i}" ${it === 'excusa' ? 'disabled' : ''} title="${ITEMS[it].text}">${ITEMS[it].emoji} ${ITEMS[it].name}${it === 'excusa' ? '<small>se usa sola</small>' : ''}</button>`).join('') : '<span class="none">Nada</span>';
+  el.carry.innerHTML = G.carry.length ? G.carry.map((m) => `<span class="chip ${MATES[m].color}">${art('informe', 'mini')} ${MATES[m].name}</span>`).join('') : '<span class="none">Nada</span>';
+  el.items.innerHTML = G.items.length ? G.items.map((it, i) => `<button type="button" class="item" data-item="${i}" ${it === 'excusa' ? 'disabled' : ''} title="${ITEMS[it].text}">${art(ITEM_ART[it], 'mini')} ${ITEMS[it].name}${it === 'excusa' ? '<small>se usa sola</small>' : ''}</button>`).join('') : '<span class="none">Nada</span>';
   el.log.textContent = G.log;
   el.stay.disabled = G.phase !== 'player' || G.busy || Boolean(G.end);
-  el.mates.innerHTML = G.mates.map((m) => `<li class="${m.done ? 'done' : ''}"><i class="dot ${MATES[m.mate].color}"></i>${MATES[m.mate].emoji} ${MATES[m.mate].name}${m.done ? ' ✓' : ''}</li>`).join('');
+  el.mates.innerHTML = G.mates.map((m) => `<li class="${m.done ? 'done' : ''}"><i class="dot ${MATES[m.mate].color}"></i>${art(MATES[m.mate].art + (m.done ? '-ok' : ''), 'mini')} ${MATES[m.mate].name}${m.done ? ' ✓' : ''}</li>`).join('');
   document.querySelectorAll('[data-level]').forEach((b) => b.classList.toggle('is-on', b.dataset.level === store.level && G.mode !== 'daily'));
   document.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === G.mode));
   el.wins.textContent = `${store.wins} de ${store.played}`;

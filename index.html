@@ -22,14 +22,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=2">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":["WebApplication","Game"],"name":"Huida del lunes","url":"https://adrianezd.github.io/huida-del-lunes/","description":"Juego de mesa de un jugador: escapa de la oficina sin que te pille el jefe.","inLanguage":"es","applicationCategory":"GameApplication","operatingSystem":"Any","isAccessibleForFree":true,"numberOfPlayers":{"@type":"QuantitativeValue","value":1},"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Cómo se gana?","acceptedAnswer":{"@type":"Answer","text":"Entrega el informe de cada uno de tus tres compañeros y sal por la puerta antes de las 18:00 sin que el jefe te pille."}},{"@type":"Question","name":"¿Cómo se mueve el jefe?","acceptedAnswer":{"@type":"Answer","text":"Solo: patrulla por la oficina y mira en línea recta. Si te ve, va a por ti. Cuánto anda cada turno lo decide una carta que puedes ver antes de mover."}}]}]}
 </script>
 </head>
 <body>
 <header class="top">
-  <div class="brand"><span class="logo" aria-hidden="true">🏃</span><div><h1>Huida del lunes</h1><p id="level">Oficina del día</p></div></div>
+  <div class="brand"><span class="logo" aria-hidden="true"><img src="assets/yo-huye.svg" alt=""></span><div><h1>Huida del lunes</h1><p id="level">Oficina del día</p></div></div>
   <label class="snd"><input type="checkbox" id="sound"> Sonido</label>
 </header>
 
@@ -61,7 +61,7 @@
         <div class="box"><p class="label">Llevas</p><div class="carry" id="carry"></div></div>
         <div class="box"><p class="label">Objetos</p><div class="items" id="items"></div></div>
       </div>
-      <button type="button" class="btn" id="stay">🫥 Esperar</button>
+      <button type="button" class="btn btn-ico" id="stay"><img src="assets/esperar.svg" alt="">Esperar</button>
       <ul class="mates" id="mates"></ul>
       <p class="wins">Huidas: <strong id="wins">0</strong></p>
     </aside>
@@ -72,9 +72,9 @@
     <ol>
       <li>Es lunes y quieres irte. Pero antes, cada uno de tus tres compañeros necesita su informe.</li>
       <li>Toca una casilla marcada para moverte hasta 3 casillas. No puedes atravesar mesas ni al jefe.</li>
-      <li>Las 🖨️ impresoras están tapadas: al pasar por una descubres de quién es su informe y lo coges. Puedes llevar dos a la vez. Ojo, hacen ruido.</li>
-      <li>Lleva cada informe a su compañero. Te cubre y te da un objeto: ☕ café para correr más, 📎 una excusa por si te pillan o 📞 una llamada falsa que entretiene al jefe.</li>
-      <li>Con los tres informes entregados, la 🚪 puerta se abre. ¡Sal por ella!</li>
+      <li>Las <img class="ico" src="assets/impresora.svg" alt=""> impresoras están tapadas: al pasar por una descubres de quién es su informe y lo coges. Puedes llevar dos a la vez. Ojo, hacen ruido.</li>
+      <li>Lleva cada informe a su compañero. Te cubre y te da un objeto: <img class="ico" src="assets/cafe.svg" alt=""> café para correr más, <img class="ico" src="assets/excusa.svg" alt=""> una excusa por si te pillan o <img class="ico" src="assets/llamada.svg" alt=""> una llamada falsa que entretiene al jefe.</li>
+      <li>Con los tres informes entregados, la <img class="ico" src="assets/puerta.svg" alt=""> puerta se abre. ¡Sal por ella!</li>
       <li>Después de cada movimiento tuyo se mueve el jefe. Patrulla y mira en línea recta: las casillas rojas son las que ve. Si te ve, va a por ti. Su próxima carta está a la vista.</li>
       <li>Pierdes si te pilla o si dan las 18:00 sin haber salido.</li>
     </ol>
@@ -82,7 +82,7 @@
 
   <div class="end" id="end" hidden>
     <div class="end-card" role="dialog" aria-labelledby="end-title">
-      <span class="end-emoji" id="end-emoji">🏃</span>
+      <span class="end-emoji" id="end-emoji"></span>
       <h2 id="end-title">¡Has escapado!</h2>
       <p id="end-text"></p>
       <div class="end-actions">
@@ -97,6 +97,6 @@
 <footer class="foot">
   <p>Juego de mesa de un jugador original. Más juegos gratis en <a href="https://adrianezd.github.io/portal/">el portal</a>.</p>
 </footer>
-<script src="script.js?v=1"></script>
+<script src="script.js?v=2"></script>
 </body>
 </html>
